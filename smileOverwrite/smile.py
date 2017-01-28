@@ -1,15 +1,17 @@
-#!/usr/bin/python2
+#参考サイト
+#http://blanktar.jp/blog/2015/02/python-opencv-realtime-lauhgingman.html
+
 #coding: utf-8
 
 import cv2
 import numpy
 
 
-cascade = cv2.CascadeClassifier('./haarcascade_frontalface_alt.xml')  # face detect classsifier
+cascade = cv2.CascadeClassifier('./haarcascade_frontalface_alt.xml')  # 顔正面を検出する分類器指定
 
-cam = cv2.VideoCapture(0)  # camera open
+cam = cv2.VideoCapture(0)  # カメラ起動
 
-laugh = cv2.imread('images/smile-black.png', -1)  # read smile image
+laugh = cv2.imread('images/smile.png', -1)  # スマイル画像読み込み
 mask = cv2.cvtColor(laugh[:,:,3], cv2.cv.CV_GRAY2BGR)/255.0  # チャンネルだけを抜き出して0から1までの値にする。あと3チャンネルにしておく。
 laugh = laugh[:,:,:3]  # αチャンネルはもういらないので消してしまう。
 
@@ -35,7 +37,7 @@ while True:
 			rect[2] += min(50, img.shape[1]-(rect[0]+rect[2]))
 			rect[3] += min(50, img.shape[0]-(rect[1]+rect[3]))
 
-			# 笑いクを認識した顔と同じサイズにリサイズする。
+			# 認識した顔と同じサイズにリサイズする。
 			laugh2 = cv2.resize(laugh, tuple(rect[2:]))
 			mask2 = cv2.resize(mask, tuple(rect[2:]))
 
